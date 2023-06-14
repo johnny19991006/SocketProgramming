@@ -10,15 +10,15 @@ import java.util.Vector;
 class ServerThread implements Runnable {
     static Vector<PrintWriter> list = new Vector<>();
 
-    private final Socket socket;
-    private final PrintWriter writer;
-    private final ServerGUI serverGUI;
+    private Socket socket;
+    private PrintWriter writer;
+    private ServerGUI serverGUI;
     private ServerInfo serverInfo;
 
-    public ServerThread(Socket socket, ServerGUI serverGUI) {
+    public ServerThread(Socket socket, ServerGUI serverGUI,ServerInfo serverInfo) {
         this.socket = socket;
         this.serverGUI = serverGUI;
-        this.serverInfo = new ServerInfo();
+        this.serverInfo = serverInfo;
         PrintWriter tempWriter = null;
         try {
             tempWriter = new PrintWriter(socket.getOutputStream());
@@ -64,7 +64,7 @@ class ServerThread implements Runnable {
         }
     }
 
-    private void validatePassword(String name, String password) throws AuthenticationException {
+    void validatePassword(String name, String password) throws AuthenticationException {
         if (!password.equals(serverInfo.getPassword())) {
             sendAll("#" + name + "님이 로그인을 실패했습니다");
             throw new AuthenticationException("Invalid password");

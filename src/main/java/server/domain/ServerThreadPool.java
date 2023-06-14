@@ -26,7 +26,7 @@ public class ServerThreadPool {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                threadPool.execute(new ServerThread(socket, serverGUI));
+                threadPool.execute(new ServerThread(socket, serverGUI, serverInfo));
             }
         } catch (IOException e) {
             e.printStackTrace();
