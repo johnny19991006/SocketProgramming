@@ -44,6 +44,8 @@ public class ServerGUI extends JFrame {
     }
 
     public void updateUserList(String userList) {
-        now.setText("접속자 명단\n" + userList);
+        now.append(userList);
+        now.append("\n");
+        now.setCaretPosition(now.getText().length() -1);
     }
 }
