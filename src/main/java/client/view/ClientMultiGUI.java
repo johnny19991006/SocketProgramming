@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+
 import static client.utils.OutputMessage.STRING_WELCOME_MESSAGE;
 
 public class ClientMultiGUI extends JFrame implements ActionListener {
@@ -27,6 +28,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
     public ClientMultiGUI() {
         super("메신저 프로그램");
+
 
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
         JPanel southPanel = new JPanel(new GridLayout(3, 1));
@@ -59,7 +61,14 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         userAndConnect.add(tfPassword);
         userAndConnect.add(connect);
         tf = new JTextField("");
-        tf.setBackground(Color.PINK);
+        float hue = 209f;
+        float saturation = 13f;
+        float brightness = 96f;
+
+        Color customColor = Color.getHSBColor(hue / 360f, saturation / 100f, brightness / 100f);
+
+        // 입력창 배경색 설정
+        tf.setBackground(customColor);
         southPanel.add(tf);
         southPanel.add(disconnect);
         userAndConnect.add(new JLabel(""));
