@@ -1,7 +1,7 @@
 package client.view;
 
 
-import client.domain.ReceiverThreadM;
+import client.domain.ClientThread;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
 public class ClientMultiGUI extends JFrame implements ActionListener {
     private JLabel label;
     private JTextField tf;
-    private JTextField tfName;
+    private JTextField tfName, tfPassword;
     private JTextField tfServer, tfPort;
     private JButton connect;
     private JButton disconnect;
@@ -23,7 +23,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
     private boolean connected;
     private PrintWriter writer;
 
-    public ClientMultiGUI(String host, int port) {
+    public ClientMultiGUI() {
         super("메신저 프로그램");
 
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
@@ -32,12 +32,10 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         JPanel Port = new JPanel(new GridLayout(1, 3, 1, 3));
 
         JPanel sendmassage1 = new JPanel(new GridLayout(1, 1));
-        tfServer = new JTextField(host);
-        tfPort = new JTextField("" + port);
-//      tfPort.setHorizontalAlignment(SwingConstants.RIGHT);
+        tfServer = new JTextField("IpAddress");
+        tfPort = new JTextField("PortNumber");
         sendmassage1.add(new JLabel("보낼 메시지"));
         server.add(new JLabel("서버 주소:"));
-
         server.add(tfServer);
         Port.add(new JLabel("포트 번호:"));
 
@@ -52,8 +50,11 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         disconnect = new JButton("나가기");
         connect.addActionListener(this);
         userAndConnect.add(new JLabel("이름 :"));
-        tfName = new JTextField("우주최강");
+        tfName = new JTextField("nickname");
         userAndConnect.add(tfName);
+        userAndConnect.add(new JLabel("비밀번호 :"));
+        tfPassword = new JTextField("password");
+        userAndConnect.add(tfPassword);
         userAndConnect.add(connect);
         tf = new JTextField("");
         tf.setBackground(Color.PINK);
@@ -94,7 +95,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if (connected) { //connected가 true이고 이벤트가 있다면 text 입력 이벤트임
+        if (connected) {
             writer.println(tf.getText());
             writer.flush();
             tf.setText("");
@@ -103,6 +104,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
         if (o == connect) {
             String username = tfName.getText().trim();
+            String password = tfPassword.getText().trim();
             if (username.length() == 0)
                 return;
             String server = tfServer.getText().trim();
@@ -115,15 +117,16 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             try {
                 port = Integer.parseInt(portNumber);
             } catch (Exception en) {
-                return;   // 포트번호가 없으면 할 일이 없음
+                return;
             }
 
-            Socket sc = null;
+            Socket socket = null;
             try {
-                sc = new Socket(server, port);
-                writer = new PrintWriter(sc.getOutputStream());
-                //내이름부터 서버로 보내준 이후에. 화면입력을 보내는 방식. 일종의 로그인 절차
+                socket = new Socket(server, port);
+                writer = new PrintWriter(socket.getOutputStream());
                 writer.println(username);
+                writer.flush();
+                writer.println(password);
                 writer.flush();
             } catch (UnknownHostException e1) {
                 e1.printStackTrace();
@@ -131,11 +134,11 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
                 e1.printStackTrace();
             }
 
-            if (sc == null) {
+            if (socket == null) {
                 return;
             }
 
-            Thread receiver = new ReceiverThreadM(sc, this);
+            Thread receiver = new ClientThread(socket, this);
             receiver.start();
 
             connected = true;
@@ -143,6 +146,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             tfServer.setEditable(false);
             tfPort.setEditable(false);
             tfName.setEditable(false);
+            tfPassword.setEditable(false);
             // 메시지 입력가능하도록
             tf.addActionListener(this);
         }
