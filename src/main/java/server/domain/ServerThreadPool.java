@@ -12,17 +12,17 @@ public class ServerThreadPool {
     private final ServerInfo serverInfo;
     private final ServerGUI serverGUI;
     private final ExecutorService threadPool;
+    private final static int THREAD_POOL_NUM=10;
 
     public ServerThreadPool(ServerInfo serverInfo, ServerGUI serverGUI) {
         this.serverInfo = serverInfo;
         this.serverGUI = serverGUI;
-        this.threadPool = Executors.newFixedThreadPool(10);
+        this.threadPool = Executors.newFixedThreadPool(THREAD_POOL_NUM);
     }
 
     public void startServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(serverInfo.getPort());
-            serverGUI.chatList("서버 시작\n");
 
             while (true) {
                 Socket socket = serverSocket.accept();

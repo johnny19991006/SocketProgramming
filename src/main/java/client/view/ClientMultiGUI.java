@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import static client.utils.OutputMessage.STRING_WELCOME_MESSAGE;
+
 public class ClientMultiGUI extends JFrame implements ActionListener {
     private JLabel label;
     private JTextField tf;
@@ -74,7 +76,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             }
         });
 
-        ta = new JTextArea("채팅방에 오신것을 환영합니다\n", 40, 40);
+        ta = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
         JPanel centerPanel = new JPanel(new GridLayout(1, 1));
         centerPanel.add(new JScrollPane(ta));
 

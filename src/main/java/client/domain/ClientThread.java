@@ -19,9 +19,9 @@ public class ClientThread extends Thread {
 
     public void run() {
         try {
-            InputStream is = socket.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(isr);
+            InputStream inputStream = socket.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
 
             while (true) {
                 String str = reader.readLine();

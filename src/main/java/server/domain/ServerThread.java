@@ -7,6 +7,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Vector;
 
+import static server.utils.ErrorMessage.STRING_INVALID_PASSWORD;
+import static server.utils.OutputMessage.*;
+
 class ServerThread implements Runnable {
     static Vector<PrintWriter> list = new Vector<>();
 
@@ -41,7 +44,7 @@ class ServerThread implements Runnable {
             password = reader.readLine();
 
             validatePassword(name, password);
-            sendAll("#" + name + "님이 들어오셨습니다.");
+            sendAll("#" + name + STRING_LOGIN_MESSAGE.getMessage());
             addUser(name);
 
             while (true) {
@@ -55,7 +58,7 @@ class ServerThread implements Runnable {
             e.printStackTrace();
         } finally {
             list.remove(writer);
-            sendAll("#" + name + "님이 나가셨습니다.");
+            sendAll("#" + name + STRING_LOGOUT_MESSAGE.getMessage());
             try {
                 socket.close();
             } catch (IOException e) {
@@ -66,8 +69,8 @@ class ServerThread implements Runnable {
 
     void validatePassword(String name, String password) throws AuthenticationException {
         if (!password.equals(serverInfo.getPassword())) {
-            sendAll("#" + name + "님이 로그인을 실패했습니다");
-            throw new AuthenticationException("Invalid password");
+            sendAll("#" + name + STRING_LOGIN_ERROR_MESSAGE.getMessage());
+            throw new AuthenticationException(STRING_INVALID_PASSWORD.getMessage());
         }
     }
 
