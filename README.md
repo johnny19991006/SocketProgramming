@@ -16,6 +16,5 @@
 - [X] ThreadPool
 - [X] GitIgnore, Application.properties
 
-
-
-  Koreatech 이재오p's Project
+<br/><br/><br/><br/>
+Koreatech 이재오p's Project
