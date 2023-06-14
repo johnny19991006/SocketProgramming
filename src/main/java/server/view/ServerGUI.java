@@ -40,7 +40,7 @@ public class ServerGUI extends JFrame {
 
     public void chatList(String str) {
         chat.append(str);
-        chat.setCaretPosition(chat.getText().length() - 1); //스크롤 될때 마지막 위치 표시
+        chat.setCaretPosition(chat.getText().length() - 1);
     }
 
     public void updateUserList(String userList) {
