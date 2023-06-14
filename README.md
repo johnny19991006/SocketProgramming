@@ -15,6 +15,7 @@
 - [X] SocketProgramming
 - [X] ThreadPool
 - [X] GitIgnore, Application.properties
+- [X] GitFlow
 
 <br/><br/><br/><br/>
 Koreatech 이재오p's Project
