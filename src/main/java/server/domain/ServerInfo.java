@@ -20,6 +20,7 @@ public class ServerInfo {
     }
 
     String password;
+    String key;
 
     public ServerInfo() {
         loadProperties();
@@ -32,6 +33,7 @@ public class ServerInfo {
 
             port = Integer.parseInt(properties.getProperty("server.port"));
             password = properties.getProperty("server.password");
+            key = properties.getProperty("server.key");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,6 +49,10 @@ public class ServerInfo {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getKey() {
+        return key;
     }
 
 }

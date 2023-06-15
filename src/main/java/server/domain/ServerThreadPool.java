@@ -12,7 +12,7 @@ public class ServerThreadPool {
     private final ServerInfo serverInfo;
     private final ServerGUI serverGUI;
     private final ExecutorService threadPool;
-    private final static int THREAD_POOL_NUM=10;
+    private final static int THREAD_POOL_NUM = 10;
 
     public ServerThreadPool(ServerInfo serverInfo, ServerGUI serverGUI) {
         this.serverInfo = serverInfo;
