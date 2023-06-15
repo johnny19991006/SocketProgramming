@@ -14,6 +14,7 @@
 - [x] TDD(Junit5)
 - [X] SocketProgramming
 - [X] ThreadPool
+- [X] Password Encryption
 - [X] GitIgnore, Application.properties
 - [X] GitFlow
 
