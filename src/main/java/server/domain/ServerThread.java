@@ -35,7 +35,7 @@ class ServerThread implements Runnable {
     @Override
     public void run() {
         String name = null;
-        String password = null;
+        String password;
         try (InputStream inputStream = socket.getInputStream();
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader reader = new BufferedReader(inputStreamReader)) {

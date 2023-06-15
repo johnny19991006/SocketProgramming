@@ -17,17 +17,24 @@ import static client.utils.OutputMessage.STRING_WELCOME_MESSAGE;
 
 public class ClientMultiGUI extends JFrame implements ActionListener {
     private JLabel label;
-    private JTextField tf;
-    private JTextField tfName, tfPassword;
-    private JTextField tfServer, tfPort;
+    private JTextField client;
+    private JTextField clientName, clientPassword;
+    private JTextField clientServer, clientPort;
     private JButton connect;
     private JButton disconnect;
-    private JTextArea ta;
+    private JTextArea clientMessage;
     private boolean connected;
     private PrintWriter writer;
 
+    private final static String ClientName="메신저 서버";
+    private final static String Message="보낼 메시지";
+    private final static String IPAddress="서버 주소: ";
+    private final static String PortNumber="포트 번호: ";
+    private final static String UserName="이름: ";
+    private final static String PassWord="비밀번호: ";
+
     public ClientMultiGUI() {
-        super("메신저 프로그램");
+        super(ClientName);
 
 
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
@@ -36,14 +43,14 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         JPanel Port = new JPanel(new GridLayout(1, 3, 1, 3));
 
         JPanel sendmassage1 = new JPanel(new GridLayout(1, 1));
-        tfServer = new JTextField("IpAddress");
-        tfPort = new JTextField("PortNumber");
-        sendmassage1.add(new JLabel("보낼 메시지"));
-        server.add(new JLabel("서버 주소:"));
-        server.add(tfServer);
-        Port.add(new JLabel("포트 번호:"));
+        clientServer = new JTextField("IpAddress");
+        clientPort = new JTextField("PortNumber");
+        sendmassage1.add(new JLabel(Message));
+        server.add(new JLabel(IPAddress));
+        server.add(clientServer);
+        Port.add(new JLabel(PortNumber));
 
-        Port.add(tfPort);
+        Port.add(clientPort);
         northPanel.add(server);
         northPanel.add(Port);
         southPanel.add(sendmassage1);
@@ -53,23 +60,22 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         connect = new JButton("연결");
         disconnect = new JButton("나가기");
         connect.addActionListener(this);
-        userAndConnect.add(new JLabel("이름 :"));
-        tfName = new JTextField("nickname");
-        userAndConnect.add(tfName);
-        userAndConnect.add(new JLabel("비밀번호 :"));
-        tfPassword = new JTextField("password");
-        userAndConnect.add(tfPassword);
+        userAndConnect.add(new JLabel(UserName));
+        clientName = new JTextField("nickname");
+        userAndConnect.add(clientName);
+        userAndConnect.add(new JLabel(PassWord));
+        clientPassword = new JTextField("password");
+        userAndConnect.add(clientPassword);
         userAndConnect.add(connect);
-        tf = new JTextField("");
+        client = new JTextField("");
         float hue = 209f;
         float saturation = 13f;
         float brightness = 96f;
 
         Color customColor = Color.getHSBColor(hue / 360f, saturation / 100f, brightness / 100f);
 
-        // 입력창 배경색 설정
-        tf.setBackground(customColor);
-        southPanel.add(tf);
+        client.setBackground(customColor);
+        southPanel.add(client);
         southPanel.add(disconnect);
         userAndConnect.add(new JLabel(""));
         northPanel.add(userAndConnect);
@@ -85,43 +91,43 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             }
         });
 
-        ta = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
+        clientMessage = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
         JPanel centerPanel = new JPanel(new GridLayout(1, 1));
-        centerPanel.add(new JScrollPane(ta));
+        centerPanel.add(new JScrollPane(clientMessage));
 
-        ta.setEditable(false);
+        clientMessage.setEditable(false);
         add(centerPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
         setVisible(true);
-        tf.requestFocus();
+        client.requestFocus();
 
     }
 
     public void append(String str) {
-        ta.append(str);
-        ta.setCaretPosition(ta.getText().length() - 1);
+        clientMessage.append(str);
+        clientMessage.setCaretPosition(clientMessage.getText().length() - 1);
     }
 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (connected) {
-            writer.println(tf.getText());
+            writer.println(client.getText());
             writer.flush();
-            tf.setText("");
+            client.setText("");
             return;
         }
 
         if (o == connect) {
-            String username = tfName.getText().trim();
-            String password = tfPassword.getText().trim();
+            String username = clientName.getText().trim();
+            String password = clientPassword.getText().trim();
             if (username.length() == 0)
                 return;
-            String server = tfServer.getText().trim();
+            String server = clientServer.getText().trim();
             if (server.length() == 0)
                 return;
-            String portNumber = tfPort.getText().trim();
+            String portNumber = clientPort.getText().trim();
             if (portNumber.length() == 0)
                 return;
             int port = 0;
@@ -154,12 +160,11 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
             connected = true;
             connect.setEnabled(false);
-            tfServer.setEditable(false);
-            tfPort.setEditable(false);
-            tfName.setEditable(false);
-            tfPassword.setEditable(false);
-            // 메시지 입력가능하도록
-            tf.addActionListener(this);
+            clientServer.setEditable(false);
+            clientPort.setEditable(false);
+            clientName.setEditable(false);
+            clientPassword.setEditable(false);
+            client.addActionListener(this);
         }
     }
 }
