@@ -1,17 +1,17 @@
 package client.view;
 
 
+import client.domain.ClientInfo;
 import client.domain.ClientThread;
+import client.utils.EncryptionUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 
 import static client.utils.OutputMessage.STRING_WELCOME_MESSAGE;
 
@@ -25,27 +25,26 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
     private JTextArea clientMessage;
     private boolean connected;
     private PrintWriter writer;
+    private ClientInfo clientInfo = new ClientInfo();
 
-    private final static String ClientName="메신저 서버";
-    private final static String Message="보낼 메시지";
-    private final static String IPAddress="서버 주소: ";
-    private final static String PortNumber="포트 번호: ";
-    private final static String UserName="이름: ";
-    private final static String PassWord="비밀번호: ";
+    private final static String ClientName = "메신저 서버";
+    private final static String Message = "보낼 메시지";
+    private final static String IPAddress = "서버 주소: ";
+    private final static String PortNumber = "포트 번호: ";
+    private final static String UserName = "이름: ";
+    private final static String PassWord = "비밀번호: ";
 
     public ClientMultiGUI() {
         super(ClientName);
-
-
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
         JPanel southPanel = new JPanel(new GridLayout(3, 1));
         JPanel server = new JPanel(new GridLayout(1, 3, 1, 3));
         JPanel Port = new JPanel(new GridLayout(1, 3, 1, 3));
 
-        JPanel sendmassage1 = new JPanel(new GridLayout(1, 1));
+        JPanel massage = new JPanel(new GridLayout(1, 1));
         clientServer = new JTextField("IpAddress");
         clientPort = new JTextField("PortNumber");
-        sendmassage1.add(new JLabel(Message));
+        massage.add(new JLabel(Message));
         server.add(new JLabel(IPAddress));
         server.add(clientServer);
         Port.add(new JLabel(PortNumber));
@@ -53,7 +52,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         Port.add(clientPort);
         northPanel.add(server);
         northPanel.add(Port);
-        southPanel.add(sendmassage1);
+        southPanel.add(massage);
 
         JPanel userAndConnect = new JPanel(new GridLayout(1, 5, 1, 3));
 
@@ -105,8 +104,8 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
     }
 
-    public void append(String str) {
-        clientMessage.append(str);
+    public void append(String message) {
+        clientMessage.append(message);
         clientMessage.setCaretPosition(clientMessage.getText().length() - 1);
     }
 
@@ -143,11 +142,12 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
                 writer = new PrintWriter(socket.getOutputStream());
                 writer.println(username);
                 writer.flush();
-                writer.println(password);
+                String encryptedPassword = EncryptionUtils.encrypt(password, clientInfo.getKey());
+                writer.println(encryptedPassword);
                 writer.flush();
             } catch (UnknownHostException e1) {
                 e1.printStackTrace();
-            } catch (IOException e1) {
+            } catch (Exception e1) {
                 e1.printStackTrace();
             }
 

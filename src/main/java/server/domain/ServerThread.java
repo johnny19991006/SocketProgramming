@@ -1,5 +1,6 @@
 package server.domain;
 
+import server.utils.DecryptionUtils;
 import server.view.ServerGUI;
 
 import javax.security.sasl.AuthenticationException;
@@ -18,7 +19,7 @@ class ServerThread implements Runnable {
     private ServerGUI serverGUI;
     private ServerInfo serverInfo;
 
-    public ServerThread(Socket socket, ServerGUI serverGUI,ServerInfo serverInfo) {
+    public ServerThread(Socket socket, ServerGUI serverGUI, ServerInfo serverInfo) {
         this.socket = socket;
         this.serverGUI = serverGUI;
         this.serverInfo = serverInfo;
@@ -68,9 +69,15 @@ class ServerThread implements Runnable {
     }
 
     void validatePassword(String name, String password) throws AuthenticationException {
-        if (!password.equals(serverInfo.getPassword())) {
-            sendAll("#" + name + STRING_LOGIN_ERROR_MESSAGE.getMessage());
-            throw new AuthenticationException(STRING_INVALID_PASSWORD.getMessage());
+        try {
+            String encryptedPassword = DecryptionUtils.decrypt(password, serverInfo.getKey());
+            if (!encryptedPassword.equals(serverInfo.getPassword())) {
+                sendAll("#" + name + STRING_LOGIN_ERROR_MESSAGE.getMessage());
+                throw new AuthenticationException(STRING_INVALID_PASSWORD.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new AuthenticationException("Password validation failed.");
         }
     }
 

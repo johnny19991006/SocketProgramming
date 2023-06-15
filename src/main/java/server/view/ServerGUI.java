@@ -13,10 +13,10 @@ public class ServerGUI extends JFrame {
     private ServerThreadPool server;
     private ServerInfo serverInfo;
 
-    private final static String ServerTitle="메신저 서버";
-    private final static String PortNumber="포트번호: ";
-    private final static String IPNumber="IP 주소: ";
-    private final static String TotalUserList="누적 접속자 목록\n";
+    private final static String ServerTitle = "메신저 서버";
+    private final static String PortNumber = "포트번호: ";
+    private final static String IPNumber = "IP 주소: ";
+    private final static String TotalUserList = "누적 접속자 목록\n";
 
     public ServerGUI(ServerInfo serverInfo) {
         super(ServerTitle);
@@ -51,6 +51,6 @@ public class ServerGUI extends JFrame {
     public void updateUserList(String userList) {
         user.append(userList);
         user.append("\n");
-        user.setCaretPosition(user.getText().length() -1);
+        user.setCaretPosition(user.getText().length() - 1);
     }
 }

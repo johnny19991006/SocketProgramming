@@ -24,10 +24,10 @@ public class ClientThread extends Thread {
             BufferedReader reader = new BufferedReader(inputStreamReader);
 
             while (true) {
-                String str = reader.readLine();
-                if (str == null)
+                String message = reader.readLine();
+                if (message == null)
                     break;
-                clientMultiGUI.append(str + "\n");
+                clientMultiGUI.append(message + "\n");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
