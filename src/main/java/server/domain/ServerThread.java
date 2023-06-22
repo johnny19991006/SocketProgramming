@@ -49,10 +49,10 @@ class ServerThread implements Runnable {
             addUser(name);
 
             while (true) {
-                String str = reader.readLine();
-                if (str == null)
+                String message = reader.readLine();
+                if (message == null)
                     break;
-                sendAll("[" + name + "]" + str);
+                sendAll("[" + name + "]" + message);
             }
 
         } catch (IOException e) {
