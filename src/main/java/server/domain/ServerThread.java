@@ -49,10 +49,10 @@ class ServerThread implements Runnable {
             addUser(name);
 
             while (true) {
-                String str = reader.readLine();
-                if (str == null)
+                String message = reader.readLine();
+                if (message == null)
                     break;
-                sendAll("[" + name + "]" + str);
+                sendAll("[" + name + "]" + message);
             }
 
         } catch (IOException e) {
@@ -81,15 +81,15 @@ class ServerThread implements Runnable {
         }
     }
 
-    private void sendAll(String str) {
-        serverGUI.chatList(str + "\n");
+    private void sendAll(String message) {
+        serverGUI.chatList(message + "\n");
         for (PrintWriter writer : list) {
-            writer.println(str);
+            writer.println(message);
             writer.flush();
         }
     }
 
-    private void addUser(String str) {
-        serverGUI.updateUserList(str);
+    private void addUser(String name) {
+        serverGUI.updateUserList(name);
     }
 }
