@@ -6,10 +6,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 public class ServerInfo {
 
-    int port;
-    String address;
+    private int port;
+    private String address;
+    private String password;
+    private String key;
 
     {
         try {
@@ -18,9 +24,6 @@ public class ServerInfo {
             throw new RuntimeException(e);
         }
     }
-
-    String password;
-    String key;
 
     public ServerInfo() {
         loadProperties();
@@ -55,4 +58,32 @@ public class ServerInfo {
         return key;
     }
 
+    public Document toXmlDocument() {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.newDocument();
+
+            // Create root element
+            org.w3c.dom.Element serverInfoElement = document.createElement("ServerInfo");
+            document.appendChild(serverInfoElement);
+
+            // Add elements to the XML document
+            appendElement(document, serverInfoElement, "Address", address);
+            appendElement(document, serverInfoElement, "Port", Integer.toString(port));
+            appendElement(document, serverInfoElement, "Password", password);
+            appendElement(document, serverInfoElement, "Key", key);
+
+            return document;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void appendElement(Document document, org.w3c.dom.Element parent, String tagName, String textContent) {
+        org.w3c.dom.Element element = document.createElement(tagName);
+        element.appendChild(document.createTextNode(textContent));
+        parent.appendChild(element);
+    }
 }

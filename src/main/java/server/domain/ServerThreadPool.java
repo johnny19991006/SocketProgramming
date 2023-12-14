@@ -32,4 +32,9 @@ public class ServerThreadPool {
             e.printStackTrace();
         }
     }
+
+    /*public Document toXmlDocument() {
+        // Implement this method to convert ServerThreadPool state to XML if needed
+        return null;
+    }*/
 }

@@ -92,4 +92,9 @@ class ServerThread implements Runnable {
     private void addUser(String name) {
         serverGUI.updateUserList(name);
     }
+
+    /*public Document toXmlDocument() {
+        // Implement this method to convert ServerThread state to XML if needed
+        return null;
+    }*/
 }
