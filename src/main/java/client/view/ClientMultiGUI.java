@@ -73,6 +73,13 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         JPanel southPanel = new JPanel(new GridLayout(3, 1));  // 수정된 부분
 
         // 수정된 부분 시작
+        clientMessage = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
+        JScrollPane messageScrollPane = new JScrollPane(clientMessage);
+        clientMessage.setEditable(false);
+        northPanel.add(messageScrollPane);
+        // 수정된 부분 끝
+
+        // 수정된 부분 시작
         client = new JTextArea("");
         client.setLineWrap(true);
 
@@ -84,17 +91,15 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
 
         client.setBackground(customColor);
         southPanel.add(new JScrollPane(client));
+        // 수정된 부분 끝
 
         JButton sendButton = new JButton("전송");
         sendButton.addActionListener(this);
         southPanel.add(sendButton);
-        // 추가된 부분 끝
-
-        northPanel.add(southPanel);
 
         JButton disconnectButton = new JButton("나가기");
         disconnectButton.addActionListener(this);
-        northPanel.add(disconnectButton);
+        southPanel.add(disconnectButton);
 
         disconnectButton.addActionListener(new ActionListener() {
             @Override
@@ -103,15 +108,9 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             }
         });
 
-        // 수정된 부분 시작
-        clientMessage = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
-        JScrollPane messageScrollPane = new JScrollPane(clientMessage);
-        clientMessage.setEditable(false);
-        southPanel.add(messageScrollPane);
-        // 수정된 부분 끝
-
         JPanel centerPanel = new JPanel(new GridLayout(1, 1));
         centerPanel.add(northPanel);
+        centerPanel.add(southPanel);  // 수정된 부분
         add(centerPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -119,6 +118,7 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         setVisible(true);
         client.requestFocus();
     }
+
 
 
 
