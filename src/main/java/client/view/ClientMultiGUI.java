@@ -70,39 +70,11 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         getContentPane().removeAll();
 
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
-        JPanel southPanel = new JPanel(new GridLayout(2, 1));
-        JPanel server = new JPanel(new GridLayout(1, 3, 1, 3));
-        JPanel Port = new JPanel(new GridLayout(1, 3, 1, 3));
+        JPanel southPanel = new JPanel(new GridLayout(3, 1));  // 수정된 부분
 
-        JPanel messagePanel = new JPanel(new GridLayout(1, 1));
-        server.add(new JLabel("보낼 메시지"));
-        server.add(clientServer);
-        Port.add(new JLabel("서버 주소: "));
-        Port.add(clientPort);
-        northPanel.add(server);
-        northPanel.add(Port);
-        southPanel.add(messagePanel);
-
+        // 수정된 부분 시작
         client = new JTextArea("");
         client.setLineWrap(true);
-        // 수정된 부분 시작
-        client.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                // 사용자가 텍스트를 입력할 때마다 처리할 내용
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                // 사용자가 텍스트를 삭제할 때마다 처리할 내용
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // 스타일이나 속성이 변경될 때 처리할 내용
-            }
-        });
-        // 수정된 부분 끝
 
         float hue = 209f;
         float saturation = 13f;
@@ -116,8 +88,8 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         JButton sendButton = new JButton("전송");
         sendButton.addActionListener(this);
         southPanel.add(sendButton);
+        // 추가된 부분 끝
 
-        sendButton.addActionListener(this);
         northPanel.add(southPanel);
 
         JButton disconnectButton = new JButton("나가기");
@@ -131,11 +103,15 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
             }
         });
 
+        // 수정된 부분 시작
         clientMessage = new JTextArea(STRING_WELCOME_MESSAGE.getMessage(), 40, 40);
-        JPanel centerPanel = new JPanel(new GridLayout(1, 1));
-        centerPanel.add(new JScrollPane(clientMessage));
-
+        JScrollPane messageScrollPane = new JScrollPane(clientMessage);
         clientMessage.setEditable(false);
+        southPanel.add(messageScrollPane);
+        // 수정된 부분 끝
+
+        JPanel centerPanel = new JPanel(new GridLayout(1, 1));
+        centerPanel.add(northPanel);
         add(centerPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -143,6 +119,8 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
         setVisible(true);
         client.requestFocus();
     }
+
+
 
     public void append(String message) {
         clientMessage.append(message + "\n");
