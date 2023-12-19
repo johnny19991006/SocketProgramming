@@ -1,6 +1,5 @@
 package client.domain;
 
-
 import client.view.ClientMultiGUI;
 
 import java.io.BufferedReader;
@@ -8,9 +7,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 public class ClientThread extends Thread {
-    Socket socket;
-    ClientMultiGUI clientMultiGUI;
+    private Socket socket;
+    private ClientMultiGUI clientMultiGUI;
 
     public ClientThread(Socket socket, ClientMultiGUI clientMultiGUI) {
         this.socket = socket;
@@ -24,13 +29,33 @@ public class ClientThread extends Thread {
             BufferedReader reader = new BufferedReader(inputStreamReader);
 
             while (true) {
-                String message = reader.readLine();
-                if (message == null)
+                String xmlMessage = reader.readLine();
+                if (xmlMessage == null)
                     break;
-                clientMultiGUI.append(message + "\n");
+
+                Document messageDocument = parseXML(xmlMessage);
+                handleMessage(messageDocument);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private Document parseXML(String xmlString) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputSource inputSource = new InputSource(new java.io.StringReader(xmlString));
+            return builder.parse(inputSource);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void handleMessage(Document messageDocument) {
+        // Handle the received XML message as needed
+        // For example, you can extract information and update the GUI
+        // clientMultiGUI.append(message + "\n");
     }
 }
