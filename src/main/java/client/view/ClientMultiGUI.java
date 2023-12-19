@@ -120,19 +120,20 @@ public class ClientMultiGUI extends JFrame implements ActionListener {
     }
 
 
-
-
     public void append(String message) {
         clientMessage.append(message + "\n");
         clientMessage.setCaretPosition(clientMessage.getText().length() - 1);
     }
+
 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (connected) {
             // 수정된 부분 시작
             if (o instanceof JButton && ((JButton) o).getText().equals("전송")) {
-                writer.println(client.getText());
+                String message = client.getText();
+                append("You: " + message);
+                writer.println(message);
                 writer.flush();
                 client.setText("");
             }
